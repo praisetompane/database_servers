@@ -1,0 +1,17 @@
+name: database_servers_local
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: test mysql
+        run: |
+          cd mysql
+          ./start_system.sh
+      - name: test postgres
+        run: |
+          cd postgres
+          ./start_system.sh
