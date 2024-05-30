@@ -1,5 +1,5 @@
 # database_servers_local
-![build status](https://github.com/RSAWEB/database_servers_local/actions/workflows/database_servers_local.yaml/badge.svg) <br>
+![build status](https://github.com/enterprisebusinessapplications/database_servers_local/actions/workflows/database_servers_local.yaml/badge.svg) <br>
 
 The objective of this solution is to implement docker-compose setups for common database servers to use for local development. <br>
 
@@ -12,18 +12,18 @@ You can copy them into the project to share the `.env` file between your applica
     ./utilities/install_docker_mac.sh
     ```
 
-    - clone repo: 
+    - clone repo:
     ```shell
     git clone git@github.com:praisetompane/database_servers.git
     ```
 
     - start up docker
     ```shell
-        #  MacOS 
+        #  MacOS
         open -a Docker
     ```
     ```shell
-        #  Linux     
+        #  Linux
         sudo systemctl start docker
     ```
     ```shell

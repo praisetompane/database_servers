@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 volumes:
   # the name of a volume to be used to store the database folder
   # the same is used at "- ./app_x_mysql_data:/var/lib/mysql"
@@ -10,23 +10,29 @@ services:
     container_name: app_x_mysql_database
     restart: always
     ports:
-      - '3306:3306'
-    expose:
-      # Opens port 3306 on the container
-      - '3306'
+      - "${DB_PORT}:3306"
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      #- MYSQL_USER=${DB_USER}
-      #- MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     env_file:
       - .env
     volumes:
       # the location of the database folder
       - ./app_x_mysql_data:/var/lib/mysql
-    command: ["--default-authentication-plugin=mysql_native_password"]
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p', 'password' ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p",
+          "password",
+        ]
       timeout: 20s
       retries: 10
   app_x_database_flyway_migrations:
@@ -34,7 +40,7 @@ services:
     environment:
       - FLYWAY_USER=${DB_NAME}
       - FLYWAY_PASSWORD=${DB_PASSWORD}
-      - FLYWAY_URL=jdbc:mysql://app_x_mysql_service:${PORT}/${DB_NAME}
+      - FLYWAY_URL=jdbc:mysql://app_x_mysql_service:${DB_PORT}/${DB_NAME}
       - FLYWAY_SCHEMAS=flyway
       - FLYWAY_GROUP=true
     volumes:
@@ -42,7 +48,7 @@ services:
     image: flyway/flyway:latest
     command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
     env_file:
-      - .env  
+      - .env
     depends_on:
-      app_x_mysql_service:  
+      app_x_mysql_service:
         condition: service_healthy
